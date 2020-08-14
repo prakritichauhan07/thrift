@@ -132,7 +132,7 @@ jobs:
     # ------------------------- phase: sca --------------------------
     # QA jobs for code analytics and metrics
     - stage: thrift
-        arch: amd64
+      arch: amd64
       script: build/docker/run.sh
       env:
         - JOB="Static Code Analysis"
