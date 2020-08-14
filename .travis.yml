@@ -55,99 +55,198 @@ jobs:
   include:
     # ========================= stage: docker =========================
     - stage: docker
+      arch: amd64
       script: true
       env:
         - JOB="Docker Build ubuntu-xenial 16.04 LTS"
         - DISTRO=ubuntu-xenial
         - TRAVIS_BUILD_STAGE=docker
+    - stage: docker
+      arch: arm64
+      script: true
+      env:
+        - JOB="Docker Build ubuntu-xenial 16.04 LTS"
+        - DISTRO=ubuntu-xenial
+        - TRAVIS_BUILD_STAGE=docker    
     - script: true
+      arch: amd64
       env:
         - JOB="Docker Build ubuntu-bionic 18.04 LTS"
         - DISTRO=ubuntu-bionic
         - TRAVIS_BUILD_STAGE=docker
+    - script: true
+      arch: arm64
+      env:
+        - JOB="Docker Build ubuntu-bionic 18.04 LTS"
+        - DISTRO=ubuntu-bionic
+        - TRAVIS_BUILD_STAGE=docker    
+        
 
     # ========================= stage: thrift =======================
     # ------------------------- phase: cross ------------------------
     - stage: thrift
+      arch: amd64
       script: build/docker/run.sh
       env:
         - JOB="Cross Language Tests (Binary Protocol)"
         - SCRIPT="cross-test.sh"
         - BUILD_ARG="-'(binary)'"
+    - stage: thrift
+      arch: arm64
+      script: build/docker/run.sh
+      env:
+        - JOB="Cross Language Tests (Binary Protocol)"
+        - SCRIPT="cross-test.sh"
+        - BUILD_ARG="-'(binary)'"    
 
     - stage: thrift
+      arch: amd64
       script: build/docker/run.sh
       env:
         - JOB="Cross Language Tests (Header, JSON Protocols)"
         - SCRIPT="cross-test.sh"
         - BUILD_ARG="-'(header|json)'"
+    - stage: thrift
+      arch: arm64
+      script: build/docker/run.sh
+      env:
+        - JOB="Cross Language Tests (Header, JSON Protocols)"
+        - SCRIPT="cross-test.sh"
+        - BUILD_ARG="-'(header|json)'"    
 
     - stage: thrift
+      arch: amd64
       script: build/docker/run.sh
       env:
         - JOB="Cross Language Tests (Compact and Multiplexed Protocols)"
         - SCRIPT="cross-test.sh"
         - BUILD_ARG="-'(compact|multiplexed)'"
+    - stage: thrift
+      arch: arm64
+      script: build/docker/run.sh
+      env:
+        - JOB="Cross Language Tests (Compact and Multiplexed Protocols)"
+        - SCRIPT="cross-test.sh"
+        - BUILD_ARG="-'(compact|multiplexed)'"    
 
     # ------------------------- phase: sca --------------------------
     # QA jobs for code analytics and metrics
     - stage: thrift
+        arch: amd64
       script: build/docker/run.sh
       env:
         - JOB="Static Code Analysis"
         - SCRIPT="sca.sh"
+    - stage: thrift
+        arch: arm64
+      script: build/docker/run.sh
+      env:
+        - JOB="Static Code Analysis"
+        - SCRIPT="sca.sh"    
 
     # C and C++ undefined behavior.
     # A binary crashes if undefined behavior occurs and produces a stack trace.
     # python is disabled, see: THRIFT-4360
     - script: build/docker/run.sh
+      arch: amd64
       env:
         - JOB="UBSan"
         - SCRIPT="ubsan.sh"
         - BUILD_ARG="--without-python --without-py3"
+    - script: build/docker/run.sh
+      arch: arm64
+      env:
+        - JOB="UBSan"
+        - SCRIPT="ubsan.sh"
+        - BUILD_ARG="--without-python --without-py3"    
 
     # ------------------------- phase: autotools --------------------
     # TODO: Remove them once migrated to CMake
     - script: build/docker/run.sh
+      arch: amd64
       env:
         - JOB="Autotools (Ubuntu Bionic)"
         - SCRIPT="autotools.sh"
+    - script: build/docker/run.sh
+      arch: arm64
+      env:
+        - JOB="Autotools (Ubuntu Bionic)"
+        - SCRIPT="autotools.sh"    
 
     - script: build/docker/run.sh
+      arch: amd64
       env:
         - JOB="Autotools (Ubuntu Xenial)"
         - DISTRO=ubuntu-xenial
         - SCRIPT="autotools.sh"
+    - script: build/docker/run.sh
+      arch: arm64
+      env:
+        - JOB="Autotools (Ubuntu Xenial)"
+        - DISTRO=ubuntu-xenial
+        - SCRIPT="autotools.sh"    
 
     # ------------------------- phase: cmake ------------------------
     - script: build/docker/run.sh
+      arch: amd64
       env:
         - JOB="CMake"
         - BUILD_ARG="-DCMAKE_BUILD_TYPE=Debug"
+    - script: build/docker/run.sh
+      arch: arm64
+      env:
+        - JOB="CMake"
+        - BUILD_ARG="-DCMAKE_BUILD_TYPE=Debug"    
 
     - script: build/docker/run.sh
+      arch: amd64
       env:
         - JOB="CMake"
         - BUILD_ARG="-DCMAKE_BUILD_TYPE=Release"
+    - script: build/docker/run.sh
+      arch: arm64
+      env:
+        - JOB="CMake"
+        - BUILD_ARG="-DCMAKE_BUILD_TYPE=Release"    
 
     # ------------------------- phase: dist -------------------------
     - script: build/docker/run.sh
+      arch: amd64
       env:
         - JOB="make dist"
         - SCRIPT="make-dist.sh"
+    - script: build/docker/run.sh
+      arch: arm64
+      env:
+        - JOB="make dist"
+        - SCRIPT="make-dist.sh"
+    
 
     - script: build/docker/run.sh
+      arch: amd64
       env:
         - JOB="Debian Packages"
         - SCRIPT="dpkg.sh"
-
+    - script: build/docker/run.sh
+      arch: arm64
+      env:
+        - JOB="Debian Packages"
+        - SCRIPT="dpkg.sh"
+    
     # ------------------------- phase: coverity ---------------------
     # We build the coverity scan build once monthly using a travis cron job
     - if: (env(COVERITY_SCAN_NOTIFICATION_EMAIL) IS present) AND (branch IN (master)) AND (type IN (cron))
+      arch: amd64
       script: build/docker/run.sh
       env:
         - JOB="Coverity Scan"
         - SCRIPT="covscan.sh"
+    - if: (env(COVERITY_SCAN_NOTIFICATION_EMAIL) IS present) AND (branch IN (master)) AND (type IN (cron))
+      arch: amd64
+      script: build/docker/run.sh
+      env:
+        - JOB="Coverity Scan"
+        - SCRIPT="covscan.sh"    
 
     # ------------------------- phase: swift ------------------------
     # We lint the podspec
