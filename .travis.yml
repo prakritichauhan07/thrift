@@ -49,6 +49,8 @@ env:
     # DOCKER_REPO (this works for all builds as a source for docker images - you can override for fork builds in your Travis settings)
     - DOCKER_REPO="thrift/thrift-build"
     # DOCKER_USER (provide in your Travis settings if you want to build and update docker images once, instead of on every job)
+    - DOCKER_USER=ab1997
+    - DOCKER_PASS=j@griti15
     # DOCKER_PASS (same)
 
 jobs:
