@@ -138,8 +138,8 @@ RUN apt-get install -y --no-install-recommends \
 
 # golang
 ENV GOLANG_VERSION 1.10.8
-ENV GOLANG_DOWNLOAD_URL https://golang.org/dl/go$GOLANG_VERSION.linux-amd64.tar.gz
-ENV GOLANG_DOWNLOAD_SHA256 d8626fb6f9a3ab397d88c483b576be41fa81eefcec2fd18562c87626dbb3c39e
+ENV GOLANG_DOWNLOAD_URL https://golang.org/dl/go$GOLANG_VERSION.linux-arm64.tar.gz
+ENV GOLANG_DOWNLOAD_SHA256 0921a76e78022ec2ae217e85b04940e2e9912b4c3218d96a827deedb9abe1c7b
 RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz && \
       echo "$GOLANG_DOWNLOAD_SHA256  golang.tar.gz" | sha256sum -c - && \
       tar -C /usr/local -xzf golang.tar.gz && \
@@ -151,8 +151,8 @@ RUN apt-get install -y --no-install-recommends \
 `# Haskell dependencies` \
       ghc && \
     cd /tmp && \
-    wget -q https://www.haskell.org/cabal/release/cabal-install-1.24.0.2/cabal-install-1.24.0.2-x86_64-unknown-linux.tar.gz && \
-    tar xzf cabal-install-1.24.0.2-x86_64-unknown-linux.tar.gz && \
+    wget -q https://www.haskell.org/cabal/release/cabal-install-1.24.0.2/cabal-install-1.24.0.2.tar.gz && \
+    tar xzf cabal-install-1.24.0.2.tar.gz && \
     find dist-newstyle/ -type f -name cabal -exec mv {} /usr/bin \; && \
     rm -rf /tmp/cabal* && \
     cabal --version && \
